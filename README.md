@@ -139,6 +139,167 @@ Review my proposed change, add tests, but do not enable live mode.
 Never paste `.env`, a private key, API credentials, or private ledger data into
 a conversation.
 
+## Planned: conversational model laboratory
+
+The repository currently runs one fixed strategy: **Strong Momentum**. A planned
+extension will let researchers use plain-English conversations with Codex to
+create named variations, review their settings, and explicitly activate the
+ones they want the one-minute timer to evaluate.
+
+This is a roadmap, not a description of functionality that already exists.
+Until it is implemented and tested, editing values in an example below will not
+create or activate another model.
+
+### What a model configuration could contain
+
+Each model would be a small, reviewable configuration rather than a copied
+trading program. For example:
+
+```json
+{
+  "name": "Strong Momentum",
+  "active": true,
+  "mode": "paper",
+  "starting_bankroll": 1000.00,
+  "min_price": 0.20,
+  "max_price": 0.85,
+  "max_spread": 0.05,
+  "min_minutes_left": 2,
+  "max_minutes_left": 12,
+  "min_move": 0.0012,
+  "min_edge": 0.03,
+  "proxy_min_edge": 0.12,
+  "confirmation_minutes": 3,
+  "max_candle_age_seconds": 120
+}
+```
+
+The saved configuration—not Codex—would make the trading decision. Codex would
+help propose, explain, validate, and edit configurations. The deterministic bot
+would load the reviewed configurations during each timer cycle.
+
+### Example conversations
+
+Create an idea without putting it into play:
+
+```text
+Create a new paper model called Moderate Momentum.
+
+Base it on Strong Momentum, but require a 0.08% move, use a 5% minimum
+edge, and accept prices between 30 and 75 cents. Keep it inactive until I
+review it. Show every value that changed and add tests.
+```
+
+Compare it with its parent:
+
+```text
+Show exactly how Moderate Momentum differs from Strong Momentum. Explain how
+each changed value could affect trade frequency and risk. Do not activate it.
+```
+
+Activate it for simulations only:
+
+```text
+Activate Moderate Momentum for paper trading only. Confirm that live trading
+is still disabled, then run the tests and show the active-model list.
+```
+
+Review the results later:
+
+```text
+Show each model's last 24-hour, seven-day, and all-time paper results. Use only
+settled ledger trades and do not estimate missing results.
+```
+
+### Proposed model commands
+
+The command-line interface could expose the same actions directly:
+
+```bash
+./venv/bin/python scripts/models.py list
+./venv/bin/python scripts/models.py show strong-momentum
+./venv/bin/python scripts/models.py clone strong-momentum moderate-momentum
+./venv/bin/python scripts/models.py diff strong-momentum moderate-momentum
+./venv/bin/python scripts/models.py activate moderate-momentum --paper
+./venv/bin/python scripts/models.py deactivate moderate-momentum
+```
+
+New models would be created **inactive** and **paper-only**. A paper activation
+would never activate live trading. Live activation would use a different
+command, additional validation, credentials, and an exact confirmation phrase.
+
+### How the one-minute timer would work
+
+Each timer cycle would:
+
+1. Download Coinbase candles and Kalshi markets once.
+2. Load every active model configuration.
+3. Evaluate each active model independently against the same data snapshot.
+4. Record qualifying paper trades in that model's separate ledger.
+5. Maintain a separate starting bankroll, cash balance, open positions, and
+   performance record for every model.
+6. Skip inactive models completely.
+
+```text
+One-minute timer
+       |
+       v
+Shared Coinbase + Kalshi snapshot
+       |
+       +----> Active Model A ----> Model A ledger and bankroll
+       +----> Active Model B ----> Model B ledger and bankroll
+       +----> Active Model C ----> Model C ledger and bankroll
+
+Inactive models are not evaluated.
+```
+
+Running several models would not mean submitting several live orders. Paper
+models could independently simulate the same market. Live execution would need
+an additional portfolio-level coordinator to prevent duplicate or conflicting
+orders across models.
+
+### Versioning and auditability
+
+Changing a model after it has traded must not rewrite history. Every saved
+revision should receive an immutable version identifier. Each ledger row should
+record:
+
+- model name and version;
+- the complete effective settings or their cryptographic hash;
+- signal probability, edge, price, spread, and market-data timestamp;
+- entry and settlement timestamps;
+- whether the fill was simulated or an actual exchange fill.
+
+Reports could then compare model versions without mixing trades produced by
+different settings.
+
+### Example multi-model report
+
+```text
+ACTIVE PAPER MODELS
+
+Model                 Trades     W-L    Win%      P/L    Open
+Strong Momentum           10     9-1    90.0%    $2.64       0
+Moderate Momentum          32    22-10   68.8%    $4.81       1
+Wide Momentum              47    29-18   61.7%    $2.22       0
+```
+
+Those numbers are formatting examples only; they are not claims about actual
+trades. Real reports must always come from the local SQLite ledger.
+
+### Required safety rules
+
+- Every new model defaults to inactive and paper-only.
+- Each paper model starts with its own explicit bankroll.
+- Configuration validation rejects impossible ranges and unsafe values.
+- Activation and configuration changes are recorded in an audit log.
+- Paper and live ledgers remain visibly distinct.
+- Live models require the complete [live checklist](LIVE_TRADING.md), explicit
+  activation, and portfolio-level exposure controls.
+- Credentials and private keys never appear in model configuration files.
+- The one-minute timer never invents results; only exchange settlements close
+  trades and determine wins, losses, and P/L.
+
 ## Repository map
 
 ```text

@@ -365,4 +365,12 @@ LIVE_TRADING.md           mandatory live-mode procedure
 AGENTS.md                 safety instructions for Codex
 ```
 
+## Questions and feedback
+
+Questions, ideas, and bug reports are welcome. Please
+[open a GitHub issue](https://github.com/preceptress/btc-15-minute-prediction-model/issues/new).
+
+Do not include API keys, private keys, `.env` contents, account details, or
+private trading records.
+
 <img src="images/cover.png" alt="" width="600">

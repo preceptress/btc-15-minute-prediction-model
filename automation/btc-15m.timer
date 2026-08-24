@@ -1,0 +1,10 @@
+[Unit]
+Description=Scan BTC 15-minute markets every minute
+
+[Timer]
+OnCalendar=*-*-* *:*:15
+Persistent=true
+Unit=btc-15m.service
+
+[Install]
+WantedBy=timers.target

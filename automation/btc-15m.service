@@ -1,0 +1,9 @@
+[Unit]
+Description=BTC 15-minute Strong Momentum cycle
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+WorkingDirectory=@PROJECT_DIR@
+ExecStart=@PROJECT_DIR@/venv/bin/python @PROJECT_DIR@/scripts/btc_bot.py cycle

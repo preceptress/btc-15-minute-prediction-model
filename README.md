@@ -311,4 +311,4 @@ LIVE_TRADING.md           mandatory live-mode procedure
 AGENTS.md                 safety instructions for Codex
 ```
 
-<img src="images/cover.png" alt="Description of image" width="600">
+<img src="images/cover.png" alt="" width="600">

@@ -8,7 +8,7 @@ safety procedure, place live trades. Paper mode is always the default.
 > original experiment had only ten settled Strong Momentum trades, so its early
 > 90% result is not enough to establish a durable edge.
 >
-<img src="cover.png" alt="" width="600">
+![BTC strategy cover](./cover.png)
 
 ## What the model does
 

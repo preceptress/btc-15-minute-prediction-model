@@ -139,6 +139,60 @@ Review my proposed change, add tests, but do not enable live mode.
 Never paste `.env`, a private key, API credentials, or private ledger data into
 a conversation.
 
+### First things to ask Codex
+
+After installing Codex and opening this repository, start with these requests:
+
+```text
+Inspect this project and explain what it does in plain English. Do not change
+any files.
+```
+
+```text
+Show me how to run this project locally. Check whether anything is missing, but
+do not install or change anything yet.
+```
+
+```text
+Map the pipeline from the trading signal through paper execution, settlement,
+reporting, tests, and the one-minute timer. Identify every safety gate.
+```
+
+```text
+Run the existing checks and give me a readiness report. Confirm whether paper
+mode is active and whether live trading is disabled.
+```
+
+```text
+Read README.md, AGENTS.md, and LIVE_TRADING.md. Tell me what could confuse a new
+user and recommend the three highest-impact documentation improvements. Do not
+make changes yet.
+```
+
+```text
+Recommend the next three improvements to this project, ranked by impact and
+risk. Keep every proposal paper-only and do not make changes yet.
+```
+
+For a complete first review, use:
+
+```text
+You are onboarding me to this project. Inspect the repository and explain what
+the application does, how it is organized, how to run it locally, and how a
+signal moves through paper trading, settlement, and reporting.
+
+Identify the tests, timer, required environment variables, external services,
+project instructions, and every safeguard separating paper and live trading.
+Do not install software, expose secrets, enable live trading, submit orders, or
+make changes yet.
+
+Finish with:
+1. Anything missing or broken
+2. The three biggest onboarding risks
+3. The three best next steps
+4. Questions that must be answered before changing the project
+```
+
 ## Planned: conversational model laboratory
 
 The repository currently runs one fixed strategy: **Strong Momentum**. A planned

@@ -8,7 +8,7 @@ safety procedure, place live trades. Paper mode is always the default.
 > original experiment had only ten settled Strong Momentum trades, so its early
 > 90% result is not enough to establish a durable edge.
 >
-> <img src="images/cover.png" alt="" width="600">
+> <img src="cover.png" alt="" width="600">
 
 ## What the model does
 

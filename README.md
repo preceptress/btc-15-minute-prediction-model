@@ -7,6 +7,8 @@ safety procedure, place live trades. Paper mode is always the default.
 > Research software, not financial advice. Paper fills are simulations. The
 > original experiment had only ten settled Strong Momentum trades, so its early
 > 90% result is not enough to establish a durable edge.
+>
+> <img src="images/cover.png" alt="" width="600">
 
 ## What the model does
 
@@ -373,4 +375,4 @@ Questions, ideas, and bug reports are welcome. Please
 Do not include API keys, private keys, `.env` contents, account details, or
 private trading records.
 
-<img src="images/cover.png" alt="" width="600">
+
